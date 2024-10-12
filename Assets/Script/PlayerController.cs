@@ -1,5 +1,6 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -8,7 +9,43 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody2D rb; 
     private Animator animator;
     private Vector3 respawnPosition;
+   
+    private int fruitCount;
+    [SerializeField] public TextMeshProUGUI fruitCounterText;
 
+    [SerializeField] GameObject victoryUI;
+
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+
+        Fruit fruit = other.gameObject.GetComponent<Fruit>();
+        if (fruit != null)
+        {
+            CollectFruit(fruit);
+        }
+    }
+
+    void UpdateFruitCounter()
+    {
+        fruitCounterText.text = "Fruits: " + fruitCount.ToString() + "/5";
+    }
+    internal void CollectFruit(Fruit fruit)
+    {
+        if (!fruit.isCollected)
+        {
+            fruit.Disappear(); 
+            fruitCount++; 
+            UpdateFruitCounter(); 
+
+            
+            if (fruitCount >= 5)
+            {
+                victoryUI.SetActive(true);
+                Time.timeScale = 0f;
+            }
+        }
+    }
     internal void Die() 
     {
         rb.bodyType = RigidbodyType2D.Static;
@@ -42,7 +79,10 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         rb.freezeRotation = true;
+        victoryUI.SetActive(false);
     }
+
+
 
     void Update()
     {
