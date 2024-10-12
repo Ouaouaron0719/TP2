@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public TextMeshProUGUI fruitCounterText;
 
     [SerializeField] GameObject victoryUI;
-
+    private Fruit[] allFruits;
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -42,7 +43,8 @@ public class PlayerController : MonoBehaviour
             if (fruitCount >= 5)
             {
                 victoryUI.SetActive(true);
-                Time.timeScale = 0f;
+                Time.timeScale = 1f;
+                Invoke(nameof(GoToNextLevel), 3f);
             }
         }
     }
@@ -50,6 +52,9 @@ public class PlayerController : MonoBehaviour
     {
         rb.bodyType = RigidbodyType2D.Static;
         StartCoroutine(FlashBeforeRespawn());
+        ResetAllFruits(); 
+        fruitCount = 0; 
+        UpdateFruitCounter(); 
     }
     private IEnumerator FlashBeforeRespawn()//From GPT
     {
@@ -80,6 +85,7 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         rb.freezeRotation = true;
         victoryUI.SetActive(false);
+        allFruits = FindObjectsOfType<Fruit>();
     }
 
 
@@ -112,4 +118,23 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void ResetAllFruits()
+    {
+        foreach (Fruit fruit in allFruits)
+        {
+            fruit.ResetFruit();
+        }
+    }
+    private void GoToNextLevel()
+    {
+        int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
+        {
+            SceneManager.LoadScene(nextSceneIndex); 
+        }
+        else
+        {
+            Debug.Log("You Win!");
+        }
+    }
 }

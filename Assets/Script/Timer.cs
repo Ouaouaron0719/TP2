@@ -6,7 +6,7 @@ using UnityEngine;
 public class Timer : MonoBehaviour
 {
     TMP_Text timerText;
-    float timePassedInSeconds;
+    static float timePassedInSeconds;
 
     private void Start()
     {
