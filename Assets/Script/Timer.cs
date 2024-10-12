@@ -18,4 +18,14 @@ public class Timer : MonoBehaviour
         timePassedInSeconds += Time.deltaTime;
         timerText.text = $"Timer: {(int)timePassedInSeconds}s";
     }
+
+    public float GetTime()
+    {
+        return timePassedInSeconds;
+    }
+
+    public void ResetTimer()
+    {
+        timePassedInSeconds = 0f;
+    }
 }

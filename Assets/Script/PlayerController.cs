@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public TextMeshProUGUI fruitCounterText;
 
     [SerializeField] GameObject victoryUI;
+    [SerializeField] GameObject celebrationUI;
     private Fruit[] allFruits;
 
     void OnTriggerEnter2D(Collider2D other)
@@ -44,7 +45,7 @@ public class PlayerController : MonoBehaviour
             {
                 victoryUI.SetActive(true);
                 Time.timeScale = 1f;
-                Invoke(nameof(GoToNextLevel), 3f);
+                Invoke(nameof(GoToNextLevel), 1f);
             }
         }
     }
@@ -85,6 +86,7 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         rb.freezeRotation = true;
         victoryUI.SetActive(false);
+        celebrationUI.SetActive(false);
         allFruits = FindObjectsOfType<Fruit>();
     }
 
@@ -127,6 +129,7 @@ public class PlayerController : MonoBehaviour
     }
     private void GoToNextLevel()
     {
+        GameManager gameManager = FindObjectOfType<GameManager>();
         int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
         if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
         {
@@ -134,6 +137,10 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            victoryUI.SetActive(false);
+            Time.timeScale = 0;
+            Timer timer = FindObjectOfType<Timer>();
+            gameManager.CompleteGame(timer.GetTime());
             Debug.Log("You Win!");
         }
     }
