@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
             bestTimeText.text = $"Best Time: {FormatTime(bestTime)}";
         }
 
-        PlayerPrefs.Save();
+        PlayerPrefs.Save();//Actually dont really understand this saving thing
     }
 
 
