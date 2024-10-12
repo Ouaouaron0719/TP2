@@ -6,11 +6,39 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed = 5f; 
     [SerializeField] private Rigidbody2D rb; 
-    private Animator animator; 
+    private Animator animator;
+    private Vector3 respawnPosition;
 
-    void Start()
+    internal void Die() 
+    {
+        rb.bodyType = RigidbodyType2D.Static;
+        StartCoroutine(FlashBeforeRespawn());
+    }
+    private IEnumerator FlashBeforeRespawn()//From GPT
     {
         
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        Color originalColor = spriteRenderer.color;
+
+        for (int i = 0; i < 6; i++)
+        {
+            spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0.2f);
+            yield return new WaitForSeconds(0.1f);
+
+            spriteRenderer.color = originalColor;
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        RespawnPlayer();
+    }
+    private void RespawnPlayer()
+    {
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        transform.transform.position = respawnPosition;
+    }
+    void Start()
+    {
+        respawnPosition = transform.position;   
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         rb.freezeRotation = true;

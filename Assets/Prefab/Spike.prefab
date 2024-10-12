@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 758085357322546164}
   - component: {fileID: 8851416335376850814}
   - component: {fileID: 4434699753834665632}
+  - component: {fileID: 2804349463910925350}
   m_Layer: 0
   m_Name: Spike
   m_TagString: Untagged
@@ -120,3 +121,15 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.14
+--- !u!114 &2804349463910925350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5837623538620567393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83b0d0cd0cd29f049a5ae953924ce5fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
